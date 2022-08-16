@@ -1,3 +1,5 @@
+ADDED: open RTL SDR with file descriptor, fixes to avoid crashes on macOS and Windows when closing the device and fixing some macOS compilation issues
+
 rtl-sdr
 turns your Realtek RTL2832 based DVB dongle into a SDR receiver
 ======================================================================
