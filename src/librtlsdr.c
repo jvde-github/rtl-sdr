@@ -1728,6 +1728,9 @@ int rtlsdr_open_file_descriptor(rtlsdr_dev_t** out_dev, int fd)
 	rtlsdr_init_baseband(dev);
 	dev->dev_lost = 0;
 
+	/* Get device manufacturer and product id */
+	r = rtlsdr_get_usb_strings(dev, dev->manufact, dev->product, NULL);
+	
 	/* Probe tuners */
 	rtlsdr_set_i2c_repeater(dev, 1);
 
@@ -1748,6 +1751,10 @@ int rtlsdr_open_file_descriptor(rtlsdr_dev_t** out_dev, int fd)
 	reg = rtlsdr_i2c_read_reg(dev, R820T_I2C_ADDR, R82XX_CHECK_ADDR);
 	if (reg == R82XX_CHECK_VAL) {
 		fprintf(stderr, "Found Rafael Micro R820T tuner\n");
+		
+		if (rtlsdr_check_dongle_model(dev, "RTLSDRBlog", "Blog V4"))
+			fprintf(stderr, "RTL-SDR Blog V4 Detected\n");
+		
 		dev->tuner_type = RTLSDR_TUNER_R820T;
 		goto found;
 	}
@@ -1788,7 +1795,10 @@ found:
 
 	switch (dev->tuner_type) {
 	case RTLSDR_TUNER_R828D:
-		dev->tun_xtal = R828D_XTAL_FREQ;
+		/* If NOT an RTL-SDR Blog V4, set typical R828D 16 MHz freq. Otherwise, keep at 28.8 MHz. */
+		if (!(rtlsdr_check_dongle_model(dev, "RTLSDRBlog", "Blog V4"))) {
+			dev->tun_xtal = R828D_XTAL_FREQ;
+		}
 		/* fall-through */
 	case RTLSDR_TUNER_R820T:
 		/* disable Zero-IF mode */
