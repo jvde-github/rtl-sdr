@@ -43,7 +43,7 @@ include(CMakePackageConfigHelpers)
 # Set the version information here
 set(VERSION_INFO_MAJOR_VERSION 2) # increment major on api compatibility changes
 set(VERSION_INFO_MINOR_VERSION 0) # increment minor on feature-level changes
-set(VERSION_INFO_PATCH_VERSION 0) # increment patch for bug fixes and docs
+set(VERSION_INFO_PATCH_VERSION 2) # increment patch for bug fixes and docs
 include(Version) # setup version info
 
 ########################################################################
@@ -71,6 +71,9 @@ find_package(PkgConfig)
 
 if(PKG_CONFIG_FOUND)
     pkg_check_modules(LIBUSB libusb-1.0 IMPORTED_TARGET)
+    if(LIBUSB_LINK_LIBRARIES)
+        set(LIBUSB_LIBRARIES "${LIBUSB_LINK_LIBRARIES}")
+    endif()
 else()
     set(LIBUSB_LIBRARIES "" CACHE STRING "manual libusb path")
     set(LIBUSB_INCLUDE_DIRS "" CACHE STRING "manual libusb includepath")
