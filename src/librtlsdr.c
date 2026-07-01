@@ -1658,7 +1658,7 @@ err:
 }
 
 #ifndef _WIN32
-int rtlsdr_open_file_descriptor(rtlsdr_dev_t** out_dev, int fd)
+int rtlsdr_open_android(rtlsdr_dev_t** out_dev, int fd)
 {
 	int r;
 	rtlsdr_dev_t* dev = NULL;

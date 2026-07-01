@@ -62,7 +62,7 @@ RTLSDR_API int rtlsdr_get_index_by_serial(const char *serial);
 
 RTLSDR_API int rtlsdr_open(rtlsdr_dev_t **dev, uint32_t index);
 #ifndef _WIN32
-RTLSDR_API int rtlsdr_open_file_descriptor(rtlsdr_dev_t** dev, int index);
+RTLSDR_API int rtlsdr_open_android(rtlsdr_dev_t** dev, int fd);
 #endif
 RTLSDR_API int rtlsdr_close(rtlsdr_dev_t *dev);
 
